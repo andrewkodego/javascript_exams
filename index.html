@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Exam</title>
+
+    <script type="text/javascript" src="SalesProblem.js"></script>
+    <script type="text/javascript" src="LongestDynasty.js"></script>
+    <script type="text/javascript" src="JumpBlocks.js"></script>
+
+    <body class="index">
+        <script>
+
+            var productProfitArray = [
+                {"Product C":98},
+                {"Product A":-75},
+                {"Product B":-70},
+                {"Product D":5},
+                {"Product E":-88},
+                {"Product F":29},            
+            ];
+
+
+            var productProfitArray2 = [
+                {"Product C":-98},
+                {"Product A":-5},
+                {"Product B":-56},
+                {"Product D":-5},
+                {"Product E":-88},
+                {"Product F":-29},            
+            ];
+
+            document.write(topProduct(productProfitArray));
+            document.write("<br>");
+            document.write(topProduct(productProfitArray2));
+            document.write("<hr>");
+            
+            document.write(bottomProduct(productProfitArray));
+            document.write("<br>");
+            document.write(bottomProduct(productProfitArray2));
+            document.write("<hr>");
+
+            document.write(zeroProfitProduct(productProfitArray));
+            document.write("<br>");
+            document.write(zeroProfitProduct(productProfitArray2));
+            document.write("<hr>");
+
+            document.write("<hr>");
+
+            document.write(convertYear('MXLI'));
+            document.write("<br>");
+            document.write(convertYear('MCCCIIII'));
+            document.write("<br>");
+            document.write(convertYear('MCCCXCVIII'));
+            document.write("<br>");
+            document.write(convertYear('MCDXLV'));
+            document.write("<br>");
+            document.write(convertYear('MDCLXIV'));
+            document.write("<br>");
+            document.write(convertYear('MCMXLIX'));
+            document.write("<br>");
+            document.write(convertYear('MMMXICX'));
+            document.write("<br>");
+            document.write("<hr>");
+
+            var dynastyReign = [
+                {"San Dynasty": "MXLI"},
+                {"Viloria Dynasty": "MCCCIIII"},
+                {"Tan Dynasty": "MCCCXCVIII"},
+                {"Bon Dynasty": "MCDXLV"},
+                {"Maiko Dynasty": "MDCLXIV"},
+                {"Paul Dynasty": "MCMXLIX"},
+                {"Andre Dynasty": "MMMXICX"},
+            ];
+
+            document.write(longestdynasty(dynastyReign));
+            document.write("<br>");
+
+            document.write("<hr>");
+            document.write("<hr>");
+
+            document.write(solution( [2, 6, 8, 5]));
+            document.write("<br>");
+            document.write(solution([1, 5, 5, 2, 6]));
+            document.write("<br>");
+
+
+        </script>
+    </body>
+</html>
