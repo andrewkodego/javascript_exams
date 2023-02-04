@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Exam</title>
+    <style>
+
+        body{
+            background-color: #e0dbdb;
+        }
+
+        .container{
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .image-box{
+            width: 115px;
+            height: 115px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            display: inline-block;
+            float: left;
+            margin-right: 15px;
+        }
+
+        .rate-details{
+            display: inline-block;
+            width: 300px;
+            border: 1px solid #fff;
+        }
+
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 30px;
+        }
+
+        #result-container{
+            padding: 30px;
+        }
+
+        #result-container>div{
+            margin-bottom: 30px;
+        }
+
+        .search-field{
+            padding: 8px;
+            width: 100%;
+
+        }
+
+
+    </style>
+
+    <body class="index">
+
+        <div class="container">
+            <div><input type="text" name="query" class="search-field" placeholder="Search"/></div>
+
+            <div id="result-container">
+                
+            </div>
+        </div>
+        <script>
+
+            (function(){
+                getApiResult();
+
+                window.onscroll = function(event){
+                    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+                        doLazyLoad();
+                    }
+                }
+
+                document.getElementById('result-container').addEventListener('wheel',(event)=>{
+                    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+                        doLazyLoad();
+                    }
+                })
+                
+            })();
+
+            let resultList = [];
+            let lazyLoad = 4;
+            let page = 1;
+            let lastItem = 0;
+            let rates = null;
+
+            function getApiResult(){
+
+                fetch('https://api.coingecko.com/api/v3/exchange_rates',
+                    {method: 'GET',headers: {'Accept':'application/json'},
+                })
+                .then(res=>res.json())
+                .then(res=> {                    
+                //{"rates":{"btc":{"name":"Bitcoin","unit":"BTC","value":1.0,"type":"crypto"},
+                //  "eth":{"name":"Ether","unit":"ETH","value":14.118,"type":"crypto"},"ltc":{"name":"Litecoin","unit":"LTC","value":235.627,"type":"crypto"},"bch":{"name":"Bitcoin Cash","unit":"BCH","value":170.391,"type":"crypto"},"bnb":{"name":"Binance Coin","unit":"BNB","value":70.865,"type":"crypto"},"eos":{"name":"EOS","unit":"EOS","value":21456.228,"type":"crypto"},"xrp":{"name":"XRP","unit":"XRP","value":57012.648,"type":"crypto"},"xlm":{"name":"Lumens","unit":"XLM","value":252125.781,"type":"crypto"},"link":{"name":"Chainlink","unit":"LINK","value":3254.34,"type":"crypto"},"dot":{"name":"Polkadot","unit":"DOT","value":3390.212,"type":"crypto"},"yfi":{"name":"Yearn.finance","unit":"YFI","value":2.96,"type":"crypto"},"usd":{"name":"US Dollar","unit":"$","value":23374.043,"type":"fiat"},"aed":{"name":"United Arab Emirates Dirham","unit":"DH","value":85855.2,"type":"fiat"},"ars":{"name":"Argentine Peso","unit":"$","value":4380958.713,"type":"fiat"},"aud":{"name":"Australian Dollar","unit":"A$","value":33758.009,"type":"fiat"},"bdt":{"name":"Bangladeshi Taka","unit":"৳","value":2509158.429,"type":"fiat"},"bhd":{"name":"Bahraini Dinar","unit":"BD","value":8810.962,"type":"fiat"},"bmd":{"name":"Bermudian Dollar","unit":"$","value":23374.043,"type":"fiat"},"brl":{"name":"Brazil Real","unit":"R$","value":120434.761,"type":"fiat"},"cad":{"name":"Canadian Dollar","unit":"CA$","value":31348.098,"type":"fiat"},"chf":{"name":"Swiss Franc","unit":"Fr.","value":21657.08,"type":"fiat"},"clp":{"name":"Chilean Peso","unit":"CLP$","value":18625606.875,"type":"fiat"},"cny":{"name":"Chinese Yuan","unit":"¥","value":158366.159,"type":"fiat"},"czk":{"name":"Czech Koruna","unit":"Kč","value":514722.157,"type":"fiat"},"dkk":{"name":"Danish Krone","unit":"kr.","value":161164.032,"type":"fiat"},"eur":{"name":"Euro","unit":"€","value":21631.508,"type":"fiat"},"gbp":{"name":"British Pound Sterling","unit":"£","value":19400.76,"type":"fiat"},"hkd":{"name":"Hong Kong Dollar","unit":"HK$","value":183435.99,"type":"fiat"},"huf":{"name":"Hungarian Forint","unit":"Ft","value":8406708.626,"type":"fiat"},"idr":{"name":"Indonesian Rupiah","unit":"Rp","value":352820950.318,"type":"fiat"},"ils":{"name":"Israeli New Shekel","unit":"₪","value":79895.988,"type":"fiat"},"inr":{"name":"Indian Rupee","unit":"₹","value":1928163.354,"type":"fiat"},"jpy":{"name":"Japanese Yen","unit":"¥","value":3066558.377,"type":"fiat"},"krw":{"name":"South Korean Won","unit":"₩","value":29167300.67,"type":"fiat"},"kwd":{"name":"Kuwaiti Dinar","unit":"KD","value":7130.392,"type":"fiat"},"lkr":{"name":"Sri Lankan Rupee","unit":"Rs","value":8531366.399,"type":"fiat"},"mmk":{"name":"Burmese Kyat","unit":"K","value":49084490.267,"type":"fiat"},"mxn":{"name":"Mexican Peso","unit":"MX$","value":443349.514,"type":"fiat"},"myr":{"name":"Malaysian Ringgit","unit":"RM","value":99573.426,"type":"fiat"},"ngn":{"name":"Nigerian Naira","unit":"₦","value":10764682.173,"type":"fiat"},"nok":{"name":"Norwegian Krone","unit":"kr","value":238097.36,"type":"fiat"},"nzd":{"name":"New Zealand Dollar","unit":"NZ$","value":36937.487,"type":"fiat"},"php":{"name":"Philippine Peso","unit":"₱","value":1267796.383,"type":"fiat"},"pkr":{"name":"Pakistani Rupee","unit":"₨","value":6316551.741,"type":"fiat"},"pln":{"name":"Polish Zloty","unit":"zł","value":102145.74,"type":"fiat"},"rub":{"name":"Russian Ruble","unit":"₽","value":1651376.224,"type":"fiat"},"sar":{"name":"Saudi Riyal","unit":"SR","value":87707.336,"type":"fiat"},"sek":{"name":"Swedish Krona","unit":"kr","value":246341.152,"type":"fiat"},"sgd":{"name":"Singapore Dollar","unit":"S$","value":30938.515,"type":"fiat"},"thb":{"name":"Thai Baht","unit":"฿","value":777882.828,"type":"fiat"},"try":{"name":"Turkish Lira","unit":"₺","value":439897.168,"type":"fiat"},"twd":{"name":"New Taiwan Dollar","unit":"NT$","value":700777.233,"type":"fiat"},"uah":{"name":"Ukrainian hryvnia","unit":"₴","value":863257.575,"type":"fiat"},"vef":{"name":"Venezuelan bolívar fuerte","unit":"Bs.F","value":2340.443,"type":"fiat"},"vnd":{"name":"Vietnamese đồng","unit":"₫","value":548107557.365,"type":"fiat"},"zar":{"name":"South African Rand","unit":"R","value":408288.682,"type":"fiat"},"xdr":{"name":"IMF Special Drawing Rights","unit":"XDR","value":17220.312,"type":"fiat"},"xag":{"name":"Silver - Troy Ounce","unit":"XAG","value":1045.632,"type":"commodity"},"xau":{"name":"Gold - Troy Ounce","unit":"XAU","value":12.527,"type":"commodity"},"bits":{"name":"Bits","unit":"μBTC","value":1000000.0,"type":"crypto"},"sats":{"name":"Satoshi","unit":"sats","value":100000000.0,"type":"crypto"}}}
+
+                    rates = res.rates;
+                    resultList = Object.keys(rates);
+                    doLazyLoad();
+                });
+            }
+
+            function doLazyLoad(){
+                if(lastItem < resultList.length){
+                    for(let i=lastItem; i < lazyLoad * page; i++){
+
+                        let item = resultList[i];
+                        let rate = rates[item];
+                        let htmlItem = '<div><div class="image-box"></div>';
+                        htmlItem += '<div class="rate-details">';
+                        htmlItem += '<ul>';
+                        htmlItem += '<li>Rate: '+ rate.value + '</li>';
+                        htmlItem += '<li>Crypto Name: '+ rate.name +'</li>';
+                        htmlItem += '<li>Crypto unit: '+ rate.unit +'</li>';
+                        htmlItem += '</ul></div></div>';
+
+                        document.getElementById('result-container').innerHTML += htmlItem;
+
+                        lastItem++;
+                    }
+
+                    page++;
+                }
+            }
+
+           
+
+        </script>
+    </body>
+</html>
